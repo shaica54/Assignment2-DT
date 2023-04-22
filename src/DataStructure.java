@@ -597,6 +597,7 @@ public class DataStructure implements DT {
         }
         System.out.println();
         System.out.println();
+        System.out.println();
     }
 
     public static void printOppRangeY(DataStructure dt, int min, int max) {
