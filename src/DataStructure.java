@@ -275,6 +275,77 @@ public class DataStructure implements DT {
         Container currMin = minX;
         Container currMax = maxX;
 
+        // if the range is bigger or smaller than the values of the list
+        // we will delete the list itself by returning an empty list
+        if(currMin == null || currMax == null || currMin.getData().getX() > max || currMax.getData().getX() < min) {
+            minX = null;
+            maxX = null;
+            minY = null;
+            maxY = null;
+            return;
+        }
+        // goes throw the list from the first container of X and deletes in Y-list
+        while(currMin != null && currMin.getData().getX() < min) {
+
+            Container nextMin = currMin.getNextY();
+            Container prevMin = currMin.getPrevY();
+
+            if(nextMin != null) {
+                // first container in X-list is the first container in Y-list
+                if(currMin == minY) {
+                    minY = nextMin;
+                    nextMin.setPrevY(null);
+                }
+                // in-between
+               else {
+                    prevMin.setNextY(nextMin);
+                    nextMin.setPrevY(prevMin);
+                }
+            }
+            else {
+                maxY = prevMin;
+                prevMin.setNextY(null);
+            }
+            // go to the other container by X value
+            currMin = currMin.getNextX();
+        }
+
+        while(currMax != null && currMax.getData().getX() > max){
+
+            Container nextMax = currMax.getNextY();
+            Container prevMax = currMax.getPrevY();
+
+            if (prevMax != null) {
+                if(currMax == maxY) {
+                    maxY = prevMax;
+                    prevMax.setNextY(null);
+                }
+                else {
+                    prevMax.setNextY(nextMax);
+                    nextMax.setPrevY(prevMax);
+
+                }
+            }
+            else {
+                minY = nextMax;
+                nextMax.setPrevY(null);
+            }
+            currMax = currMax.getPrevX();
+        }
+
+        if(sizeOfList != 1) {
+            minX = currMin;
+            currMin.setPrevX(null);
+            maxX = currMax;
+            currMax.setNextX(null);
+        }
+
+
+
+
+   /*     Container currMin = minX;
+        Container currMax = maxX;
+
         while (currMin != null && currMin.getData().getX() < min) {
             currMin.changeInRange(true);
             currMin = currMin.getNextX();
@@ -316,7 +387,7 @@ public class DataStructure implements DT {
             currMax.setNextX(null);
             currMax.setNextY(null);
         }
-
+*/
     }
 
     public void deleteFromY(int min, int max) {
@@ -391,16 +462,34 @@ public class DataStructure implements DT {
         dt.addPoint(p8);
         dt.addPoint(p9);
 
+        DataStructure dt2 = new DataStructure();
+        dt2.addPoint(p1);
+
         printPointsX(dt);
         printPointsY(dt);
         System.out.println();
-        System.out.println(dt.getMedian(false).getData());
+  //      System.out.println(dt.getMedian(false).getData());
         System.out.println();
-        printOrigRangeX(dt,2,3);
-        printOppRangeX(dt,5,7);
-        printOrigRangeY(dt, 12, 20);
-        printOrigRangeY(dt, -2, -1);
-        printOppRangeY(dt, 2,4);
+//        printOrigRangeX(dt,2,3);
+//        printOppRangeX(dt,5,7);
+//        printOrigRangeY(dt, 12, 20);
+//        printOrigRangeY(dt, -2, -1);
+//        printOppRangeY(dt, 2,4);
+
+        dt.deleteFromX(5,7);
+        System.out.println("NEW LIST - range by X: from 5 to 7");
+        System.out.print("By X:");
+        printPointsX(dt);
+        System.out.print("By Y:");
+        printPointsY(dt);
+
+        dt2.deleteFromX(5,7);
+        System.out.println("NEW LIST - range by X: from 5 to 7");
+        System.out.print("By X:");
+        printPointsX(dt2);
+        System.out.print("By Y:");
+        printPointsY(dt2);
+
 
 
     }
