@@ -282,6 +282,7 @@ public class DataStructure implements DT {
             maxX = null;
             minY = null;
             maxY = null;
+            sizeOfList = 0;
             return;
         }
         // goes throw the list from the first container of X and deletes in Y-list
@@ -341,55 +342,6 @@ public class DataStructure implements DT {
             maxX = currMax;
             currMax.setNextX(null);
         }
-
-
-
-
-   /*     Container currMin = minX;
-        Container currMax = maxX;
-
-        while (currMin != null && currMin.getData().getX() < min) {
-            currMin.changeInRange(true);
-            currMin = currMin.getNextX();
-        }
-
-        while (currMax != null && currMax.getData().getX() > max) {
-            currMax.changeInRange(true);
-            currMax = currMax.getPrevX();
-        }
-
-        // start of change Y
-        Container changeMinY = minY;
-
-        while (changeMinY.inRange())
-            changeMinY = changeMinY.getNextY();
-
-        minY = changeMinY;
-
-        Container changeMaxY = maxY;
-
-        while (changeMaxY.inRange())
-            changeMaxY = changeMinY.getNextY();
-
-        maxY = changeMaxY;
-        // end of change Y
-
-        if (maxX.getData().getX() < min | minX.getData().getX() > max) {
-            minX = null;
-            minY = null;
-            maxX = null;
-            maxY = null;
-            return;
-        } else if (currMin != minX) {
-            minX = currMin;
-            currMin.setPrevX(null);
-            currMin.setPrevY(null);
-        } else if (currMax != maxX) {
-            maxX = currMax;
-            currMax.setNextX(null);
-            currMax.setNextY(null);
-        }
-*/
     }
 
     public void deleteFromY(int min, int max) {
@@ -522,6 +474,16 @@ public class DataStructure implements DT {
         System.out.print("By Y:");
         printPointsY(dt3);
         System.out.println("size of  after delete: " +dt3.sizeOfList);
+
+        System.out.println();
+        dt3.deleteFromX(1,2);
+        System.out.println("NEW LIST4 - range by X: from 1 to 2");
+        System.out.print("By X:");
+        printPointsX(dt3);
+        System.out.print("By Y:");
+        printPointsY(dt3);
+        System.out.println("size of  after delete: " +dt3.sizeOfList);
+
 
 
 
