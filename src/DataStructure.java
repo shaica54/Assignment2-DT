@@ -345,7 +345,76 @@ public class DataStructure implements DT {
     }
 
     public void deleteFromY(int min, int max) {
+        Container currMin = minY;
+        Container currMax = maxY;
 
+        // if the range is bigger or smaller than the values of the list
+        // we will delete the list itself by returning an empty list
+        if(currMin == null || currMax == null || currMin.getData().getY() > max || currMax.getData().getY() < min) {
+            minX = null;
+            maxX = null;
+            minY = null;
+            maxY = null;
+            sizeOfList = 0;
+            return;
+        }
+        // goes throw the list from the first container of X and deletes in Y-list
+        while(currMin != null && currMin.getData().getY() < min) {
+
+            Container nextMin = currMin.getNextX();
+            Container prevMin = currMin.getPrevX();
+
+            if(nextMin != null) {
+                // first container in X-list is the first container in Y-list
+                if(currMin == minX) {
+                    minX = nextMin;
+                    nextMin.setPrevX(null);
+                }
+                // in-between
+                else {
+                    prevMin.setNextX(nextMin);
+                    nextMin.setPrevX(prevMin);
+                }
+            }
+            else {
+                maxX = prevMin;
+                prevMin.setNextX(null);
+            }
+            // go to the other container by X value
+            sizeOfList = sizeOfList - 1;
+            currMin = currMin.getNextY();
+        }
+
+        while(currMax != null && currMax.getData().getY() > max){
+
+            Container nextMax = currMax.getNextX();
+            Container prevMax = currMax.getPrevX();
+
+            if (prevMax != null) {
+                if(currMax == maxX) {
+                    maxX = prevMax;
+                    prevMax.setNextX(null);
+                }
+                else {
+                    prevMax.setNextX(nextMax);
+                    nextMax.setPrevX(prevMax);
+
+                }
+            }
+            else {
+                minX = nextMax;
+                nextMax.setPrevX(null);
+            }
+            sizeOfList = sizeOfList - 1;
+            currMax = currMax.getPrevY();
+        }
+
+        if(sizeOfList != 1) {
+            minY = currMin;
+            currMin.setPrevY(null);
+            maxY = currMax;
+            currMax.setNextY(null);
+        }
     }
 
     @Override
@@ -398,12 +467,12 @@ public class DataStructure implements DT {
     public static void main(String[] args) {
         DataStructure dt = new DataStructure();
         Point p1 = new Point(6, 3, "bbb");
-        Point p2 = new Point(9, 1, "ccc");
+        Point p2 = new Point(9, 6, "ccc");
         Point p3 = new Point(7, 4, "aaa");
         Point p4 = new Point(6, 2, "ddd");
         Point p5 = new Point(5, 1, "eee");
-        Point p6 = new Point(7, 1, "fff");
-        Point p7 = new Point(1, 1, "hhh");
+        Point p6 = new Point(7, 7, "fff");
+        Point p7 = new Point(1, 6, "hhh");
         Point p8 = new Point(1, 0, "hhh");
         Point p9 = new Point(10, 10, "hhh");
         dt.addPoint(p1);
@@ -422,7 +491,7 @@ public class DataStructure implements DT {
         printPointsX(dt);
         printPointsY(dt);
         System.out.println();
-  //      System.out.println(dt.getMedian(false).getData());
+        //      System.out.println(dt.getMedian(false).getData());
         System.out.println();
 //        printOrigRangeX(dt,2,3);
 //        printOppRangeX(dt,5,7);
@@ -430,12 +499,13 @@ public class DataStructure implements DT {
 //        printOrigRangeY(dt, -2, -1);
 //        printOppRangeY(dt, 2,4);
 
-        dt.deleteFromX(5,7);
+        dt.deleteFromY(5,7);
         System.out.println("NEW LIST1 - range by X: from 5 to 7");
         System.out.print("By X:");
         printPointsX(dt);
         System.out.print("By Y:");
         printPointsY(dt);
+        maxMinStatus(dt);
         System.out.println();
 
         dt2.deleteFromX(5,7);
@@ -444,7 +514,10 @@ public class DataStructure implements DT {
         printPointsX(dt2);
         System.out.print("By Y:");
         printPointsY(dt2);
+        maxMinStatus(dt2);
         System.out.println();
+
+
 
         DataStructure dt3 = new DataStructure();
 
@@ -474,6 +547,7 @@ public class DataStructure implements DT {
         System.out.print("By Y:");
         printPointsY(dt3);
         System.out.println("size of  after delete: " +dt3.sizeOfList);
+        maxMinStatus(dt3);
 
         System.out.println();
         dt3.deleteFromX(1,2);
@@ -483,6 +557,10 @@ public class DataStructure implements DT {
         System.out.print("By Y:");
         printPointsY(dt3);
         System.out.println("size of  after delete: " +dt3.sizeOfList);
+        System.out.println("Min X is:" + dt3.minX);
+        System.out.println("Max X is:" + dt3.maxX);
+        System.out.println("Min Y is:" + dt3.minY);
+        System.out.println("Max Y is:" + dt3.maxY);
 
 
 
